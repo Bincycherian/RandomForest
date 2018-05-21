@@ -1,0 +1,59 @@
+real_estate <- read.csv("real_estate_data_prepn.csv")
+View(real_estate)
+dataset = real_estate
+
+# 
+# install.packages('caTools')
+library(caTools)
+
+set.seed(123)
+split = sample.split(dataset$tx_price, SplitRatio = 0.8)
+training_set = subset(dataset, split == TRUE)
+test_set = subset(dataset, split == FALSE)
+
+
+# install.packages("randomForest")
+library(randomForest)
+set.seed(1234)
+regressor = randomForest(x = training_set,
+                         y = training_set$tx_price,
+                         ntree = 10)
+
+regressor$rsq
+
+y_pred = predict(regressor, newdata = test_set)
+y_pred
+
+y_mae <- mean(abs(y_pred-test_set$tx_price))
+y_mae
+
+
+
+
+> setwd("C:/Users/bijo/Desktop/data analysis class/PROJECT1/9_2")
+> real_estate <- read.csv("real_estate_data_prepn.csv")
+> View(real_estate)
+> dataset = real_estate
+> library("caTools", lib.loc="~/R/win-library/3.4")
+> library(caTools)
+> set.seed(123)
+> split = sample.split(dataset$tx_price, SplitRatio = 0.8)
+> training_set = subset(dataset, split == TRUE)
+> test_set = subset(dataset, split == FALSE)
+> library("randomForest", lib.loc="~/R/win-library/3.4")
+randomForest 4.6-12
+Type rfNews() to see new features/changes/bug fixes.
+> library(randomForest)
+> set.seed(1234)
+> regressor = randomForest(x = training_set,
++                          y = training_set$tx_price,
++                          ntree = 10)
+> regressor$rsq
+ [1] 0.8681294 0.8430488 0.8899352 0.9010779 0.9027555 0.9257878 0.9198621 0.9337945 0.9438542
+[10] 0.9408814
+
+> y_pred = predict(regressor, newdata = test_set)
+
+> y_mae <- mean(abs(y_pred-test_set$tx_price))
+> y_mae
+[1] 16826.23
